@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://root:@localhost:3306/tegar_uas_pwa"
+}
+
+model Anggota {
+  id            Int      @id @default(autoincrement())
+  nama          String
+  telepon       String
+  alamat        String
+  tanggalLahir  DateTime
+  jenisKelamin  String
+  tanggalDaftar DateTime @default(now())
+
+  Simpanan Simpanan[]
+
+  Pinjaman Pinjaman[]
+
+  PembayaranPinjaman PembayaranPinjaman[]
+}
+
+model KategoriPinjaman {
+  id   Int    @id @default(autoincrement())
+  nama String
+  kode String
+
+  Pinjaman Pinjaman[]
+}
+
+model KategoriSimpanan {
+  id   Int    @id @default(autoincrement())
+  nama String
+  kode String
+
+  Simpanan Simpanan[]
+}
+
+model MetodePembayaran {
+  id    Int    @id @default(autoincrement())
+  nama  String
+  kode  String
+  biaya Int
+
+  PembayaranPinjaman PembayaranPinjaman[]
+}
+
+model StatusPinjaman {
+  id     Int    @id @default(autoincrement())
+  status String
+  kode   String
+
+  Pinjaman Pinjaman[]
+}
+
+model Simpanan {
+  id                 Int              @id @default(autoincrement())
+  jumlah             Int
+  tanggal            DateTime         @default(now())
+  anggotaId          Int
+  Anggota            Anggota          @relation(fields: [anggotaId], references: [id])
+  kategoriSimpananId Int
+  KategoriSimpanan   KategoriSimpanan @relation(fields: [kategoriSimpananId], references: [id])
+}
+
+model Pinjaman {
+  id                 Int              @id @default(autoincrement())
+  tanggal            DateTime         @default(now())
+  jumlah             Int
+  statusPinjamanId   Int
+  kategoriPinjamanId Int
+  anggotaId          Int
+  StatusPinjaman     StatusPinjaman   @relation(fields: [statusPinjamanId], references: [id])
+  KategoriPinjaman   KategoriPinjaman @relation(fields: [kategoriPinjamanId], references: [id])
+  Anggota            Anggota          @relation(fields: [anggotaId], references: [id])
+
+  PembayaranPinjaman PembayaranPinjaman[]
+}
+
+model PembayaranPinjaman {
+  id                 Int              @id @default(autoincrement())
+  tanggal            DateTime         @default(now())
+  jumlah             Int
+  metodePembayaranId Int
+  pinjamanId         Int
+  anggotaId          Int
+  MetodePembayaran   MetodePembayaran @relation(fields: [metodePembayaranId], references: [id])
+  Pinjaman           Pinjaman         @relation(fields: [pinjamanId], references: [id])
+  Anggota            Anggota          @relation(fields: [anggotaId], references: [id])
+}
