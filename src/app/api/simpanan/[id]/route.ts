@@ -1,13 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { myPrisma } from "@/lib/prisma"
 
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: number } }
+  { params }: { params: Promise<{ id: number }> }
 ) {
   try {
+    await delay(1000); // 1 second delay
+    const { id } = await params;
     const data = await myPrisma.simpanan.findUnique({
-      where: { id: Number(params.id) },
+      where: { id: Number(id) },
       include: {
         Anggota: true,
         KategoriSimpanan: true
@@ -32,12 +36,14 @@ export async function GET(
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: number } }
+  { params }: { params: Promise<{ id: number }> }
 ) {
   try {
+    const { id } = await params;
+    await delay(1000); // 1 second delay
     const body = await req.json()
     const data = await myPrisma.simpanan.update({
-      where: { id: Number(params.id) },
+      where: { id: Number(id) },
       data: body,
       include: {
         Anggota: true,
@@ -56,11 +62,13 @@ export async function PATCH(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: number } }
+  { params }: { params: Promise<{ id: number }> }
 ) {
   try {
+    const { id } = await params;
+    await delay(1000); // 1 second delay
     const data = await myPrisma.simpanan.delete({
-      where: { id: Number(params.id) }
+      where: { id: Number(id) }
     })
     
     return NextResponse.json(data)
