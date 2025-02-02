@@ -1,8 +1,7 @@
 'use client'
 
-import { useGetAllAnggota } from "../../api/anggota/model"
+import { AnggotaWithRelations, useGetAllAnggota } from "../../api/anggota/model"
 import { useState } from "react"
-import { Prisma } from "@prisma/client"
 import axios from 'axios'
 import { mutate } from "swr"
 import { exportAnggotaToExcel } from "./report"
@@ -60,7 +59,7 @@ export default function Page() {
     }
   }
 
-  const handleEdit = (editData: Prisma.AnggotaCreateInput & { id: number }) => {
+  const handleEdit = (editData: AnggotaWithRelations) => {
     setFormData({
       nama: editData.nama,
       telepon: editData.telepon,
@@ -228,6 +227,8 @@ export default function Page() {
                   <th>Tanggal Lahir</th>
                   <th>Jenis Kelamin</th>
                   <th>Tanggal Daftar</th>
+                  <th>Total Pinjaman</th>
+                  <th>Total Simpanan</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -241,6 +242,8 @@ export default function Page() {
                     <td>{new Date(anggota.tanggalLahir).toLocaleDateString()}</td>
                     <td>{anggota.jenisKelamin}</td>
                     <td>{new Date(anggota.tanggalDaftar).toLocaleDateString()}</td>
+                    <td className="font-bold">{anggota.Simpanan.reduce((sum, item) => sum + item.jumlah, 0)}</td>
+                    <td className="font-bold">{anggota.Pinjaman.reduce((sum, item) => sum + item.jumlah, 0)}</td>
                     <td>
                       <button
                         onClick={() => handleEdit(anggota)}

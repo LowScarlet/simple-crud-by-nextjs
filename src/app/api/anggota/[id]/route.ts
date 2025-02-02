@@ -11,6 +11,10 @@ export async function GET(
     await delay(1000); // 1 second delay
     const { id } = await params;
     const data = await myPrisma.anggota.findUnique({
+      include: {
+        Simpanan: true,
+        Pinjaman: true
+      },
       where: { id: Number(id) }
     })
 
@@ -39,6 +43,10 @@ export async function PATCH(
     await delay(1000); // 1 second delay
     const body = await req.json()
     const data = await myPrisma.anggota.update({
+      include: {
+        Simpanan: true,
+        Pinjaman: true
+      },
       where: { id: Number(id) },
       data: body
     })
@@ -60,6 +68,10 @@ export async function DELETE(
     const { id } = await params;
     await delay(1000); // 1 second delay
     const data = await myPrisma.anggota.delete({
+      include: {
+        Simpanan: true,
+        Pinjaman: true
+      },
       where: { id: Number(id) }
     })
 

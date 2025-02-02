@@ -232,6 +232,7 @@ export default function Page() {
                   <th>No</th>
                   <th>Tanggal</th>
                   <th>Jumlah</th>
+                  <th>Sisa Pinjaman</th>
                   <th>Anggota</th>
                   <th>Kategori</th>
                   <th>Status</th>
@@ -244,6 +245,7 @@ export default function Page() {
                     <td>{index + 1}</td>
                     <td>{new Date(pinjaman.tanggal).toLocaleDateString()}</td>
                     <td>{pinjaman.jumlah}</td>
+                    <td className="font-bold">{pinjaman.jumlah-pinjaman.PembayaranPinjaman.reduce((total, item) => total + item.jumlah, 0)}</td>
                     <td>{pinjaman.Anggota.nama}</td>
                     <td>{pinjaman.KategoriPinjaman.nama}</td>
                     <td>{pinjaman.StatusPinjaman.status}</td>

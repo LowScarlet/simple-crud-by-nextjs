@@ -1,0 +1,94 @@
+// schema.prisma
+datasource db {
+  provider = "postgresql"  // Ganti dengan provider yang kamu gunakan, seperti mysql, sqlite, dll.
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  stock       Int
+  categoryId  Int
+  category    Category @relation(fields: [categoryId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  orderItems  OrderItem[]
+}
+
+model Customer {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  address   String
+  phone     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders    Order[]
+}
+
+model Order {
+  id          Int         @id @default(autoincrement())
+  customerId  Int
+  customer    Customer    @relation(fields: [customerId], references: [id])
+  orderDate   DateTime    @default(now())
+  status      OrderStatus @default(PENDING)
+  items       OrderItem[]
+  totalAmount Float
+  payment     Payment?
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Float
+  totalAmount Float
+}
+
+model Payment {
+  id          Int          @id @default(autoincrement())
+  orderId     Int          @unique
+  order       Order        @relation(fields: [orderId], references: [id])
+  paymentDate DateTime     @default(now())
+  amount      Float
+  method      PaymentMethod
+  status      PaymentStatus @default(PENDING)
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String
+  products    Product[]
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  BANK_TRANSFER
+  E_WALLET
+  CASH
+}

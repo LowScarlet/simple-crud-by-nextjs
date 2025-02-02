@@ -130,9 +130,9 @@ export default function Page() {
                     type="number"
                     placeholder="Jumlah"
                     value={formData.jumlah === null ? '' : formData.jumlah}
-                    onChange={(e) => setFormData({ 
-                      ...formData, 
-                      jumlah: e.target.value ? parseInt(e.target.value) : null 
+                    onChange={(e) => setFormData({
+                      ...formData,
+                      jumlah: e.target.value ? parseInt(e.target.value) : null
                     })}
                     className="input-bordered w-full input"
                   />
@@ -216,6 +216,7 @@ export default function Page() {
                   <th>No</th>
                   <th>Tanggal</th>
                   <th>Jumlah</th>
+                  <th>Jumlah Bayar</th>
                   <th>Metode Pembayaran</th>
                   <th>Anggota</th>
                   <th>ID Pinjaman</th>
@@ -228,6 +229,7 @@ export default function Page() {
                     <td>{index + 1}</td>
                     <td>{new Date(pembayaran.tanggal).toLocaleDateString()}</td>
                     <td>{pembayaran.jumlah}</td>
+                    <td className="font-bold">{pembayaran.jumlah+pembayaran.MetodePembayaran.biaya}</td>
                     <td>{pembayaran.MetodePembayaran.nama}</td>
                     <td>{pembayaran.Anggota.nama}</td>
                     <td>{pembayaran.pinjamanId}</td>
