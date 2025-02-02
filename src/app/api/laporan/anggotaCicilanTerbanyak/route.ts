@@ -5,15 +5,19 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export async function GET() {
   try {
-    await delay(1000); // 1 second delay
+    await delay(1000);
     const data = await myPrisma.anggota.findMany({
       include: {
-        PembayaranPinjaman: true,
+        _count: {
+          select: {
+            PembayaranPinjaman: true
+          }
+        },
       },
       orderBy: {
         PembayaranPinjaman: {
-          _count: 'desc',
-        },
+          _count: 'desc'
+        }
       },
     });
     return NextResponse.json(data, { status: 200 })

@@ -8,7 +8,6 @@ import { useState } from "react"
 import { Prisma } from "@prisma/client"
 import axios from 'axios'
 import { mutate } from "swr"
-import { exportPinjamanToExcel } from './report'
 
 const apiPath = '/api/pinjaman'
 const defaultFormData = {
@@ -102,7 +101,7 @@ export default function Page() {
 
   const handleExport = () => {
     if (data) {
-      exportPinjamanToExcel(data);
+      //
     }
   }
 

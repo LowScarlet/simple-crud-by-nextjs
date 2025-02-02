@@ -5,7 +5,6 @@ import { useState } from "react"
 import { Prisma } from "@prisma/client"
 import axios from 'axios'
 import { mutate } from "swr"
-import { exportMetodePembayaranToExcel } from "./report"
 
 const apiPath = '/api/metodePembayaran'
 const defaultFormData = {
@@ -85,7 +84,7 @@ export default function Page() {
 
   const handleExportToExcel = async () => {
     if (data) {
-      await exportMetodePembayaranToExcel(data);
+      //
     }
   }
 

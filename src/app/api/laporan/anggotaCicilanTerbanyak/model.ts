@@ -6,11 +6,15 @@ import useSWR from "swr";
 
 export type AnggotaCicilanTerbanyak = Prisma.AnggotaGetPayload<{
   include: {
-    PembayaranPinjaman: true
-  }
+    _count: {
+      select: {
+        PembayaranPinjaman: true
+      }
+    },
+  },
 }>;
 
-export const useGetAllAnggota = () => {
+export const useAnggotaCicilanTerbanyak = () => {
   const { data, error, isLoading } = useSWR<AnggotaCicilanTerbanyak[]>('/api/laporan/anggotaCicilanTerbanyak', fetcher);
 
   return { data, isLoading, isError: error };

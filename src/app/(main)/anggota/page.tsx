@@ -4,7 +4,6 @@ import { AnggotaWithRelations, useGetAllAnggota } from "../../api/anggota/model"
 import { useState } from "react"
 import axios from 'axios'
 import { mutate } from "swr"
-import { exportAnggotaToExcel } from "./report"
 
 const apiPath = '/api/anggota'
 const defaultFormData = {
@@ -82,7 +81,7 @@ export default function Page() {
 
   const handleExportToExcel = async () => {
     if (data) {
-      await exportAnggotaToExcel(data);
+      //
     }
   }
 

@@ -7,7 +7,6 @@ import { Prisma } from "@prisma/client"
 import axios from 'axios'
 import { mutate } from "swr"
 import { useGetAllKategoriSimpanan } from "@/app/api/kategoriSimpanan/model"
-import { exportSimpananToExcel } from './report'
 
 const apiPath = '/api/simpanan'
 const defaultFormData = {
@@ -96,7 +95,7 @@ export default function Page() {
 
   const handleExport = () => {
     if (data) {
-      exportSimpananToExcel(data);
+      //
     }
   }
 
