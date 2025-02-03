@@ -5,11 +5,33 @@ import { useState } from "react"
 import { Prisma } from "@prisma/client"
 import axios from 'axios'
 import { mutate } from "swr"
+import { PinjamanPopuler } from "@/app/laporan/kategoriPinjamanPopuler/page"
+import { PDFDownloadLink } from "@react-pdf/renderer"
+import { useKategoriPinjamanPopuler } from "@/app/api/laporan/kategoriPinjamanPopuler/model"
 
 const apiPath = '/api/kategoriPinjaman'
 const defaultFormData = {
   nama: '',
   kode: ''
+}
+
+const LaporanSelect = () => {
+  const { data: pinjamanPopuler } = useKategoriPinjamanPopuler()
+  return (
+    <div className="dropdown">
+      <label tabIndex={0} className="w-full sm:w-auto btn">Laporan</label>
+      <ul tabIndex={0} className="z-[1] bg-base-100 shadow p-2 rounded-box w-52 dropdown-content menu">
+        <li>
+          <PDFDownloadLink
+            document={<PinjamanPopuler data={pinjamanPopuler} />}
+            fileName="kategori-pinjaman-populer.pdf"
+          >
+            Pinjaman Populer
+          </PDFDownloadLink>
+        </li>
+      </ul>
+    </div>
+  )
 }
 
 export default function Page() {
@@ -80,12 +102,6 @@ export default function Page() {
     }
   }
 
-  const handleExportToExcel = async () => {
-    if (data) {
-      //
-    }
-  }
-
   if (isLoading) return (
     <div className="flex justify-center items-center h-screen">
       <div className="loading loading-lg loading-spinner"></div>
@@ -100,12 +116,7 @@ export default function Page() {
             Data Kategori Pinjaman
           </h1>
           <div className="flex sm:flex-row flex-col gap-2 w-full sm:w-auto">
-            <button
-              onClick={handleExportToExcel}
-              className="w-full sm:w-auto btn btn-primary"
-            >
-              Laporan Excel
-            </button>
+            <LaporanSelect />
             <button
               onClick={handleAdd}
               className="w-full sm:w-auto btn btn-success"

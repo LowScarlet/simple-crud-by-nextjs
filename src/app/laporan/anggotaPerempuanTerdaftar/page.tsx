@@ -1,8 +1,7 @@
 'use client'
 
-import { useAnggotaPerempuanTerdaftar } from "@/app/api/laporan/anggotaPerempuanTerdaftar/model";
 import { Anggota } from "@prisma/client";
-import { PDFDownloadLink, Document, Page as PDFPage, Text, View, StyleSheet } from "@react-pdf/renderer"
+import { Document, Page as PDFPage, Text, View, StyleSheet } from "@react-pdf/renderer"
 
 const styles = StyleSheet.create({
   page: { padding: 30, paddingTop: 20 },
@@ -28,7 +27,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export const PDFDocument = ({ data }: { data: Anggota[] }) => (
+export const PerempuanTerdaftar = ({ data }: { data?: Anggota[] }) => (
   <Document>
     <PDFPage size="A4" orientation="landscape" style={styles.page}>
       <Text style={styles.title}>Laporan Anggota Perempuan</Text>
@@ -83,23 +82,3 @@ export const PDFDocument = ({ data }: { data: Anggota[] }) => (
     </PDFPage>
   </Document>
 );
-
-export default function Page() {
-  const { data, isLoading } = useAnggotaPerempuanTerdaftar()
-
-  if (isLoading || !data) return <div>Loading...</div>
-
-  return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h1 className="font-bold text-2xl">Anggota Cicilan Terbanyak</h1>
-        <PDFDownloadLink
-          document={<PDFDocument data={data} />}
-          fileName="anggota-cicilan-terbanyak.pdf"
-        >
-          Test Download
-        </PDFDownloadLink>
-      </div>
-    </div>
-  )
-}

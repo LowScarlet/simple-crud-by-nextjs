@@ -4,6 +4,17 @@ import { AnggotaWithRelations, useGetAllAnggota } from "../../api/anggota/model"
 import { useState } from "react"
 import axios from 'axios'
 import { mutate } from "swr"
+import { useAnggotaCicilanTerbanyak } from "@/app/api/laporan/anggotaCicilanTerbanyak/model"
+import { PDFDownloadLink } from "@react-pdf/renderer"
+import { CicilanTerbanyak } from "@/app/laporan/anggotaCicilanTerbanyak/page"
+import { LakiLakiTerdaftar } from "@/app/laporan/anggotaLakiLakiTerdaftar/page"
+import { useAnggotaLakiLakiTerdaftar } from "@/app/api/laporan/anggotaLakiLakiTerdaftar/model"
+import { useAnggotaPerempuanTerdaftar } from "@/app/api/laporan/anggotaPerempuanTerdaftar/model"
+import { PerempuanTerdaftar } from "@/app/laporan/anggotaPerempuanTerdaftar/page"
+import { PinjamanTerbanyak } from "@/app/laporan/anggotaPinjamanTerbanyak/page"
+import { useAnggotaPinjamanTerbanyak } from "@/app/api/laporan/anggotaPinjamanTerbanyak/model"
+import { SimpananTerbanyak } from "@/app/laporan/anggotaSimpananTerbanyak/page"
+import { useAnggotaSimpananTerbanyak } from "@/app/api/laporan/anggotaSimpananTerbanyak/model"
 
 const apiPath = '/api/anggota'
 const defaultFormData = {
@@ -13,6 +24,61 @@ const defaultFormData = {
   tanggalLahir: '',
   jenisKelamin: '',
   tanggalDaftar: ''
+}
+
+const LaporanSelect = () => {
+  const { data: cicilanTerbanyak } = useAnggotaCicilanTerbanyak()
+  const { data: lakiLakiTerdaftar } = useAnggotaLakiLakiTerdaftar()
+  const { data: perempuanTerdaftar } = useAnggotaPerempuanTerdaftar()
+  const { data: pinjamanTerbanyak } = useAnggotaPinjamanTerbanyak()
+  const { data: simpananTerbanyak } = useAnggotaSimpananTerbanyak()
+  return (
+    <div className="dropdown">
+      <label tabIndex={0} className="w-full sm:w-auto btn">Laporan</label>
+      <ul tabIndex={0} className="z-[1] bg-base-100 shadow p-2 rounded-box w-52 dropdown-content menu">
+      <li>
+        <PDFDownloadLink
+          document={<CicilanTerbanyak data={cicilanTerbanyak} />}
+          fileName="anggota-cicilan-terbanyak.pdf"
+        >
+          Cicilan Terbanyak
+        </PDFDownloadLink>
+      </li>
+      <li>
+        <PDFDownloadLink
+          document={<LakiLakiTerdaftar data={lakiLakiTerdaftar} />}
+          fileName="anggota-laki-laki-terdaftar.pdf"
+        >
+          Laki laki Terdaftar
+        </PDFDownloadLink>
+      </li>
+      <li>
+        <PDFDownloadLink
+          document={<PerempuanTerdaftar data={perempuanTerdaftar} />}
+          fileName="anggota-perempuan-terdaftar.pdf"
+        >
+          Perempuan Terdaftar
+        </PDFDownloadLink>
+      </li>
+      <li>
+        <PDFDownloadLink
+          document={<PinjamanTerbanyak data={pinjamanTerbanyak} />}
+          fileName="anggota-pinjaman-terbanyak.pdf"
+        >
+          Pinjaman Terbanyak
+        </PDFDownloadLink>
+      </li>
+      <li>
+        <PDFDownloadLink
+          document={<SimpananTerbanyak data={simpananTerbanyak} />}
+          fileName="anggota-simpanan-terbanyak.pdf"
+        >
+          Simpanan Terbanyak
+        </PDFDownloadLink>
+      </li>
+      </ul>
+    </div>
+  )
 }
 
 export default function Page() {
@@ -79,12 +145,6 @@ export default function Page() {
     setIsModalOpen(true)
   }
 
-  const handleExportToExcel = async () => {
-    if (data) {
-      //
-    }
-  }
-
   const handleDelete = async (id: number) => {
     if (confirm('Yakin ingin menghapus?')) {
       setDeletingId(id);
@@ -115,12 +175,7 @@ export default function Page() {
             Data Anggota
           </h1>
           <div className="flex sm:flex-row flex-col gap-2 w-full sm:w-auto">
-            <button
-              onClick={handleExportToExcel}
-              className="w-full sm:w-auto btn btn-primary"
-            >
-              Laporan Excel
-            </button>
+            <LaporanSelect />
             <button
               onClick={handleAdd}
               className="w-full sm:w-auto btn btn-success"
@@ -226,8 +281,8 @@ export default function Page() {
                   <th>Tanggal Lahir</th>
                   <th>Jenis Kelamin</th>
                   <th>Tanggal Daftar</th>
-                  <th>Total Pinjaman</th>
                   <th>Total Simpanan</th>
+                  <th>Total Pinjaman</th>
                   <th>Aksi</th>
                 </tr>
               </thead>

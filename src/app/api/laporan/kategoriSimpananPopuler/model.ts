@@ -4,16 +4,16 @@ import fetcher from "@/lib/fetcher";
 import { Prisma } from "@prisma/client";
 import useSWR from "swr";
 
-export type KategoriPinjamanPopuler = Prisma.KategoriPinjamanGetPayload<{
+export type KategoriSimpananPopuler = Prisma.KategoriSimpananGetPayload<{
   include: {
     _count: {
-      select: { Pinjaman: true },
+      select: { Simpanan: true },
     },
   },
 }>;
 
-export const useKategoriPinjamanPopuler = () => {
-  const { data, error, isLoading } = useSWR<KategoriPinjamanPopuler[]>('/api/laporan/kategoriSimpananPopuler', fetcher);
+export const useKategoriSimpananPopuler = () => {
+  const { data, error, isLoading } = useSWR<KategoriSimpananPopuler[]>('/api/laporan/kategoriSimpananPopuler', fetcher);
 
   return { data, isLoading, isError: error };
 };

@@ -1,7 +1,7 @@
 'use client'
 
-import { AnggotaCicilanTerbanyak, useAnggotaCicilanTerbanyak } from "@/app/api/laporan/anggotaCicilanTerbanyak/model"
-import { PDFDownloadLink, Document, Page as PDFPage, Text, View, StyleSheet } from "@react-pdf/renderer"
+import { AnggotaCicilanTerbanyak } from "@/app/api/laporan/anggotaCicilanTerbanyak/model"
+import { Document, Page as PDFPage, Text, View, StyleSheet } from "@react-pdf/renderer"
 
 const styles = StyleSheet.create({
   page: { padding: 30, paddingTop: 20 },
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const PDFDocument = ({ data }: { data: AnggotaCicilanTerbanyak[] }) => (
+export const CicilanTerbanyak = ({ data }: { data?: AnggotaCicilanTerbanyak[] }) => (
   <Document>
     <PDFPage size="A4" orientation="landscape" style={styles.page}>
       <Text style={styles.title}>Laporan Anggota Cicilan Terbanyak</Text>
@@ -76,23 +76,3 @@ const PDFDocument = ({ data }: { data: AnggotaCicilanTerbanyak[] }) => (
     </PDFPage>
   </Document>
 );
-
-export default function Page() {
-  const { data, isLoading } = useAnggotaCicilanTerbanyak()
-
-  if (isLoading || !data) return <div>Loading...</div>
-
-  return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h1 className="font-bold text-2xl">Anggota Cicilan Terbanyak</h1>
-        <PDFDownloadLink
-          document={<PDFDocument data={data} />}
-          fileName="anggota-cicilan-terbanyak.pdf"
-        >
-          Test Download
-        </PDFDownloadLink>
-      </div>
-    </div>
-  )
-}

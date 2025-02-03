@@ -1,7 +1,7 @@
 'use client'
 
-import { Anggota } from "@prisma/client";
-import { Document, Page as PDFPage, Text, View, StyleSheet } from "@react-pdf/renderer"
+import { KategoriSimpananPopuler } from "@/app/api/laporan/kategoriSimpananPopuler/model";
+import { Document, Page as PDFPage, StyleSheet, Text, View } from "@react-pdf/renderer";
 
 const styles = StyleSheet.create({
   page: { padding: 30, paddingTop: 20 },
@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   date: { fontSize: 12, textAlign: 'left', marginBottom: 15 },
   table: { display: "flex", width: "auto", borderStyle: "solid", borderWidth: 1, borderRightWidth: 0, borderBottomWidth: 0 },
   tableRow: { flexDirection: "row" },
-  tableCol: { width: "45%", borderStyle: "solid", borderWidth: 1, borderLeftWidth: 0, borderTopWidth: 0 },
+  tableCol: { width: "30%", borderStyle: "solid", borderWidth: 1, borderLeftWidth: 0, borderTopWidth: 0 },
   tableCell: { margin: "auto", marginTop: 5, marginBottom: 5, fontSize: 10 },
   signatureContainer: {
     position: 'absolute',
@@ -27,10 +27,10 @@ const styles = StyleSheet.create({
   }
 });
 
-export const LakiLakiTerdaftar = ({ data }: { data?: Anggota[] }) => (
+export const SimpananPopuler = ({ data }: { data?: KategoriSimpananPopuler[] }) => (
   <Document>
     <PDFPage size="A4" orientation="landscape" style={styles.page}>
-      <Text style={styles.title}>Laporan Anggota Laki-Laki</Text>
+      <Text style={styles.title}>Laporan Kategori Simpanan Populer</Text>
       <Text style={styles.date}>{new Date().toLocaleString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</Text>
       <View style={styles.table}>
         <View style={styles.tableRow}>
@@ -43,13 +43,13 @@ export const LakiLakiTerdaftar = ({ data }: { data?: Anggota[] }) => (
             <Text style={styles.tableCell}>No</Text>
           </View>
           <View style={styles.tableCol}>
-            <Text style={styles.tableCell}>Nama Anggota</Text>
+            <Text style={styles.tableCell}>Nama</Text>
           </View>
           <View style={styles.tableCol}>
-            <Text style={styles.tableCell}>Telepon</Text>
+            <Text style={styles.tableCell}>Kode</Text>
           </View>
           <View style={styles.tableCol}>
-            <Text style={styles.tableCell}>Alamat</Text>
+            <Text style={styles.tableCell}>Banyak Digunakan</Text>
           </View>
         </View>
         {data?.map((item, index) => (
@@ -66,10 +66,10 @@ export const LakiLakiTerdaftar = ({ data }: { data?: Anggota[] }) => (
               <Text style={styles.tableCell}>{item.nama}</Text>
             </View>
             <View style={styles.tableCol}>
-              <Text style={styles.tableCell}>{item.telepon}</Text>
+              <Text style={styles.tableCell}>{item.kode}</Text>
             </View>
             <View style={styles.tableCol}>
-              <Text style={styles.tableCell}>{item.alamat}</Text>
+              <Text style={styles.tableCell}>{item._count.Simpanan}</Text>
             </View>
           </View>
         ))}

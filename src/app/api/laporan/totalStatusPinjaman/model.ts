@@ -12,8 +12,8 @@ export type TotalStatusPinjaman = Prisma.StatusPinjamanGetPayload<{
   },
 }>;
 
-export const useMetodePembayaranPopuler = () => {
-  const { data, error, isLoading } = useSWR<TotalStatusPinjaman[]>('/api/laporan/metodePembayaranPopuler', fetcher);
+export const useTotalStatusPinjaman = () => {
+  const { data, error, isLoading } = useSWR<TotalStatusPinjaman[]>('/api/laporan/totalStatusPinjaman', fetcher);
 
   return { data, isLoading, isError: error };
 };
